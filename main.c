@@ -10,14 +10,14 @@ void mark(int **array, int size_x, int size_y, int n, int pos_x, int pos_y);
 void wave(int **array, int size_x, int size_y);
 char shortest(int **array, int size_x, int size_y, int pos_x, int pos_y);
 void back(int **array, int size_x, int size_y, char *way, int sizeWay);
-void normWayArray(char *wat, int size);	// normolize way array
+void normWayArray(char *wat, int size);	// normolize 'way' array
 
 int main()
 {
-	const unsigned size_x  = 17,			// size labyrinth array 
+	const unsigned size_x  = 17,			// size 'labyrinth' array 
 			 	   size_y  = 17;
-	char way[size_x * size_y];				// way array
-	int labyrinth[size_x][size_y] =			// labyrinth array
+	char way[size_x * size_y];				// 'way' array
+	int labyrinth[size_x][size_y] =			// 'labyrinth' array
 			{{0, 0, 0, 0, 0, 0, 0, 0, 0,-1, 0, 0, 0, 0, 0, 0, 0},
 			 {0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1,-2},
 			 {0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0},
@@ -73,7 +73,7 @@ void checkLabyrinth(int **array, int size_x, int size_y)
 				numExit++;
 		}
 	}
-	if(numEnter == 1 and numExit == 1)
+	if(numEnter == 1 && numExit == 1)
 		printf("Check is [OK]\n");
 	else {
 		printf("Check is [ERROR]\nEnters = %d\nExits = %d\n", numEnter, numExit);
@@ -254,9 +254,9 @@ void normWayArray(char *way, int size)
 			way[i] = '\0';
 		i++;
 	} while(i < size);
-	i = min_n + 1;
+	i = min_n;
 	do {
 		way[i] = '\0';
 		i++;
-	} while (i <= size - (min_n + 1));
+	} while (i <= size - (min_n));
 }
