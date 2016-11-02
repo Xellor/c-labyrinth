@@ -5,17 +5,17 @@
 
 void printTDArray(int **array, int size_x, int size_y);
 void printCArray(char array[], int size);
-void checkLabyrinth(int **array, int size_x, int size_y);	//
-void mark(int **array, int size_x, int size_y, int n, int pos_x, int pos_y);	//
-void wave(int **array, int size_x, int size_y);	//
-char shortest(int **array, int size_x, int size_y, int pos_x, int pos_y);	//
-void back(int **array, int size_x, int size_y, char *way, int sizeWay);	//
-void normWayArray(char *wat, int size);	//
+void checkLabyrinth(int **array, int size_x, int size_y);
+void mark(int **array, int size_x, int size_y, int n, int pos_x, int pos_y);
+void wave(int **array, int size_x, int size_y);
+char shortest(int **array, int size_x, int size_y, int pos_x, int pos_y);
+void back(int **array, int size_x, int size_y, char *way, int sizeWay);
+void normWayArray(char *wat, int size);
 
 int main()
 {
-	const unsigned size_x  = 17,			// size 'labyrinth' array 
-			 	   size_y  = 17;
+	const unsigned size_x = 17,				// size 'labyrinth' array
+				   size_y = 17;
 	char way[size_x * size_y];				// 'way' array
 	int labyrinth[size_x][size_y] =			// 'labyrinth' array
 			{{0, 0, 0, 0, 0, 0, 0, 0, 0,-1, 0, 0, 0, 0, 0, 0, 0},
@@ -24,7 +24,7 @@ int main()
 			 {0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 0},
 			 {0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0},
 			 {1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0},
-			 {0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0},	// That was not easy)
+			 {0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0},
 			 {0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0},
 			 {0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 			 {0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0},
@@ -60,8 +60,8 @@ void printCArray(char array[], int size)
 	for(unsigned i = 0; i < size; i++)
 		printf("%c", array[i]);
 	printf(";\n");
-}
-void checkLabyrinth(int **array, int size_x, int size_y)	// check numbers enters and exits
+}	// check numbers enters and exits
+void checkLabyrinth(int **array, int size_x, int size_y)
 {
 	int *pArray = (int*)array;
 	int numEnter = 0,
@@ -77,12 +77,13 @@ void checkLabyrinth(int **array, int size_x, int size_y)	// check numbers enters
 	if(numEnter == 1 && numExit == 1)
 		printf("Check is [OK]\n");
 	else {
-		printf("Check is [ERROR]\nEnters = %d\nExits = %d\n", numEnter, numExit);
+		printf("Check is [ERROR]\nEnters = %d\nExits = %d\n", 
+			numEnter, numExit);
 		exit(1);
 	}
-}
-void mark(int **array, int size_x, int size_y, int n, int pos_x, int pos_y)	// marks adjacent sections
-{																			// 'pos_x' and 'pos_y' flag 'n'
+}	// marks adjacent sections 'pos_x' and 'pos_y' flag 'n'
+void mark(int **array, int size_x, int size_y, int n, int pos_x, int pos_y)
+{
 	int *pArray = (int*)array;
 	if(pArray[pos_x * size_x + pos_y + 1] == 1)
 		pArray[pos_x * size_x + pos_y + 1] = n;
@@ -98,7 +99,7 @@ void wave(int **array, int size_x, int size_y)	// wave function
 	checkLabyrinth((int**)array, size_x, size_y);
 	int *pArray = (int*)array;
 	int n = 2, i, j;
-	
+
 	for(i = 0; i < size_x; i++) {
 		for(j = 0; j < size_y; j++) {
 			if(pArray[i * size_x + j] == -1) {
@@ -117,32 +118,40 @@ void wave(int **array, int size_x, int size_y)	// wave function
 		}
 		n++;
 	} while (n < (size_x * size_y));
-}
-char shortest(int **array, int size_x, int size_y, int pos_x, int pos_y)	// return nearest section (Right, Up etc)
+}	// return nearest section (Right, Up etc)
+char shortest(int **array, int size_x, int size_y, int pos_x, int pos_y)
 {
 	int *pArray = (int*)array;
 	int min = size_x * size_y, min_x, min_y;
 
-	if(pArray[pos_x * size_x + (pos_y + 1)] < min && pArray[pos_x * size_x + (pos_y + 1)] != -2 &&
-		pArray[pos_x * size_x + (pos_y + 1)] != 0 && pArray[pos_x * size_x + (pos_y + 1)] != 1) {
+	if(pArray[pos_x * size_x + (pos_y + 1)] < min &&
+	pArray[pos_x * size_x + (pos_y + 1)] != -2 &&
+	pArray[pos_x * size_x + (pos_y + 1)] != 0 &&
+	pArray[pos_x * size_x + (pos_y + 1)] != 1) {
 		min = pArray[pos_x * size_x + (pos_y + 1)];
 		min_x = pos_x;
 		min_y = pos_y + 1;
 	}
-	if(pArray[pos_x * size_x + (pos_y - 1)] < min && pArray[pos_x * size_x + (pos_y - 1)] != -2 &&
-		pArray[pos_x * size_x + (pos_y - 1)] != 0 && pArray[pos_x * size_x + (pos_y - 1)] != 1) {
+	if(pArray[pos_x * size_x + (pos_y - 1)] < min &&
+	pArray[pos_x * size_x + (pos_y - 1)] != -2 &&
+	pArray[pos_x * size_x + (pos_y - 1)] != 0 &&
+	pArray[pos_x * size_x + (pos_y - 1)] != 1) {
 		min = pArray[pos_x * size_x + pos_y - 1];
 		min_x = pos_x;
 		min_y = pos_y - 1;
 	}
-	if(pArray[(pos_x - 1) * size_x + pos_y] < min && pArray[(pos_x - 1) * size_x + pos_y] != -2 &&
-		pArray[(pos_x - 1) * size_x + pos_y] != 0 && pArray[(pos_x - 1) * size_x + pos_y] != 1) {
+	if(pArray[(pos_x - 1) * size_x + pos_y] < min &&
+	pArray[(pos_x - 1) * size_x + pos_y] != -2 &&
+	pArray[(pos_x - 1) * size_x + pos_y] != 0 &&
+	pArray[(pos_x - 1) * size_x + pos_y] != 1) {
 		min = pArray[(pos_x - 1) * size_x + pos_y];
 		min_x = pos_x - 1;
 		min_y = pos_y;
 	}
-	if(pArray[(pos_x + 1) * size_x + pos_y] < min && pArray[(pos_x + 1) * size_x + pos_y] != -2 &&
-		pArray[(pos_x + 1) * size_x + pos_y] != 0 && pArray[(pos_x + 1) * size_x + pos_y] != 1) {
+	if(pArray[(pos_x + 1) * size_x + pos_y] < min &&
+	pArray[(pos_x + 1) * size_x + pos_y] != -2 &&
+	pArray[(pos_x + 1) * size_x + pos_y] != 0 &&
+	pArray[(pos_x + 1) * size_x + pos_y] != 1) {
 		min = pArray[(pos_x + 1) * size_x + pos_y];
 		min_x = pos_x + 1;
 		min_y = pos_y;
@@ -156,8 +165,8 @@ char shortest(int **array, int size_x, int size_y, int pos_x, int pos_y)	// retu
 	else if(min_x == pos_x + 1 && min_y == pos_y)
 		return 'D';
 	else return '\0';
-}
-void back(int **array, int size_x, int size_y, char *way, int sizeWay)	// function way back
+}	// function way back
+void back(int **array, int size_x, int size_y, char *way, int sizeWay)
 {
 	int *pArray = (int*)array;
 	int i, j, enter_x, enter_y, exit_x, exit_y;
@@ -202,7 +211,7 @@ void back(int **array, int size_x, int size_y, char *way, int sizeWay)	// functi
 	} while(i < size_x * size_y);
 	normWayArray(way, sizeWay);
 }
-void normWayArray(char *way, int size)	// normolize 'way' array
+void normWayArray(char *way, int size)	// normalize 'way' array
 {
 	const int tempSize = size;
 	char temp[tempSize];
