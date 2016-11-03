@@ -124,7 +124,7 @@ void wave(int **array, int size_x, int size_y)	// wave function
 		if(m1 == m2)
 			break;
 		m2 = m1;
-	} while (true);
+	} while (n < size_x * size_y);
 }	// return nearest section (Right, Up etc)
 char shortest(int **array, int size_x, int size_y, int pos_x, int pos_y)
 {
