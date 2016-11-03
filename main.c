@@ -97,14 +97,15 @@ void mark(int **array, int size_x, int size_y, int n, int pos_x, int pos_y)
 void wave(int **array, int size_x, int size_y)	// wave function
 {
 	checkLabyrinth((int**)array, size_x, size_y);
-	int *pArray = (int*)array;
-	int n = 2, i, j;
+	int *pArray = (int*) array;
+	int n = 2, m1 = 2, m2 = 0, i, j;
 
 	for(i = 0; i < size_x; i++) {
 		for(j = 0; j < size_y; j++) {
 			if(pArray[i * size_x + j] == -1) {
 				mark((int**)array, size_x, size_y, n, i, j);
 				n++;
+				m1++;
 				break;
 			}
 		}
@@ -112,12 +113,18 @@ void wave(int **array, int size_x, int size_y)	// wave function
 	do {
 		for(i = 0; i < size_x; i++) {
 			for(j = 0; j < size_y; j++) {
-				if(pArray[i * size_x + j] == n - 1)
+				if(pArray[i * size_x + j] == n - 1) {
 					mark((int**)array, size_x, size_y, n, i, j);
+					m1++;
+				}
 			}
 		}
+		printf("n = %d, m1 = %d\n", n, m1);
 		n++;
-	} while (n < (size_x * size_y));
+		if(m1 == m2)
+			break;
+		m2 = m1;
+	} while (true);
 }	// return nearest section (Right, Up etc)
 char shortest(int **array, int size_x, int size_y, int pos_x, int pos_y)
 {
