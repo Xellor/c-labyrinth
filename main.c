@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void printTDArray(int **array, int size_x, int size_y);
+void printTDArray(const int **array, int size_x, int size_y);
 void printCArray(char array[], int size);
 void checkLabyrinth(int **array, int size_x, int size_y);
 void mark(int **array, int size_x, int size_y, int n, int pos_x, int pos_y);
@@ -37,16 +37,16 @@ int main()
 			 {0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
 
 	printf("Labyrinth:\n");
-	printTDArray((int**)labyrinth, size_x, size_y);
+	printTDArray((const int**)labyrinth, size_x, size_y);
 	wave((int**)labyrinth, size_x, size_y);
 	printf("Labyrinth after wave:\n");
-	printTDArray((int**)labyrinth, size_x, size_y);
+	printTDArray((const int**)labyrinth, size_x, size_y);
 	back((int**)labyrinth, size_x, size_y, way, (size_x * size_y));
 	printf("\nYou exit here: ");
-	printCArray(way, (size_x * size_y));
+	printCArray(way, size_x * size_y);
 	return 0;
 }
-void printTDArray(int **array, int size_x, int size_y)
+void printTDArray(const int **array, int size_x, int size_y)
 {
 	int *pArray = (int*)array;
 	for(int i = 0; i < size_x; i++) {
@@ -119,7 +119,6 @@ void wave(int **array, int size_x, int size_y)	// wave function
 				}
 			}
 		}
-		printf("n = %d, m1 = %d\n", n, m1);
 		n++;
 		if(m1 == m2)
 			break;
