@@ -58,6 +58,9 @@ void printTDArray(const int **array, int size_x, int size_y)
 }
 void printCArray(char array[], int size)
 {
+	// TODO раз уж ты вывводишь посимвольно, и знаешь, что твоя строка оканчивается на '\0',
+	// то гораздо логичнее выводить в цикле while до тех пор пока не стретишь '\0'
+	// P.s. а вообще можно было вместо цикла написать: printf("%s", array);
 	for (unsigned i = 0; i < size; i++) {
 		printf("%c", array[i]);
 	}
@@ -69,6 +72,8 @@ void checkLabyrinth(int **array, int size_x, int size_y)
 	int *pArray = (int*)array;
 	int numEnter = 0,
 		numExit  = 0;
+	// TODO как только ты нашел вход и выход можно заканчивать обход массива,
+	// иначе ты выполняешь кучу ненужных операций сравнения
 	for (int i = 0; i < size_x; i++) {
 		for (int j = 0; j < size_y; j++) {
 			if (pArray[i * size_x + j] == -1) {
@@ -107,6 +112,8 @@ void mark(int **array, int size_x, int size_y, int n, int pos_x, int pos_y)
 }
 void wave(int **array, int size_x, int size_y)	// wave function
 {
+	// TODO логичнее выполнять проверку до вызова функции wave,
+	// т.к. она не является частью логику распространения волны
 	checkLabyrinth((int**)array, size_x, size_y);
 	int *pArray = (int*) array;
 	int n = 2, i, j;
@@ -120,6 +127,15 @@ void wave(int **array, int size_x, int size_y)	// wave function
 			}
 		}
 	}
+	// TODO не понятно, что за переменные m1 и m2. (лучше поменять название или пояснить комментом)
+	// m2 == m1, зачем это? И я не вижу способа, чтобы это условие выполнилось хоть когда-нибудь.
+	// Если проверка на продвижение фронта, то у тебя опечатка из-за которая это не работает.
+	// А слабо без обхода всего массива для каждой "волны".
+	// Условие остановки - не конец обхода лабиринта, а нахождение выхода или обнаружение, что все пути являются тупиковыми.
+	// Иначе у тебя цикл вхолостую работает
+	//
+	// Также нет необходимости при каждой итерации внешнего цикла перебирать весь массив.
+	// Достаточно перебрать точки фронта (точки которые ты пометил на предыдущей итерации)
 	for (int m1 = 2, m2 = 0; n <= size_x * size_y; m2 == m1, n++) {
 		for (i = 0; i < size_x; i++) {
 			for (j = 0; j < size_y; j++) {
@@ -139,6 +155,9 @@ char shortest(int **array, int size_x, int size_y, int pos_x, int pos_y)
 	int *pArray = (int*)array;
 	int min = size_x * size_y, min_x, min_y;
 
+	// TODO условие внутри if'ов одно и то же и по факту в этом месте сильной дублирование кода,
+	// это следует вынести в отдельную функцию.
+	// Довольно часто такой код содержит copy-paste ошибки
 	if (pArray[pos_x * size_x + (pos_y + 1)] < min &&
 	pArray[pos_x * size_x + (pos_y + 1)] != -2 &&
 	pArray[pos_x * size_x + (pos_y + 1)] != 0 &&
@@ -189,6 +208,8 @@ void back(int **array, int size_x, int size_y, char *way, int sizeWay)
 	int *pArray = (int*)array;
 	int i, j, enter_x, enter_y, exit_x, exit_y;
 
+	// TODO тут не замечание, а просто комментарий: если бы не этот способ поиска конца,
+	// то, вероятно, твоя реализация смогла бы обрабатывать ситуацию нескольких выходов.
 	for (i = 0; i < size_x; i++) {
 		for (j = 0; j < size_y; j++) {
 			if (pArray[i * size_x + j] == -1) {	// find enter
@@ -232,6 +253,7 @@ void normWayArray(char *way, int size)	// normalize 'way' array
 	char temp[tempSize];
 	int i, j, min_n;
 
+	// TODO тут чтобы найти конец пути достаточно найти индекс '\0' т.к. ты явно записываешь '\0' при формированнии строки
 	for (i = 0, j = 0; i < size; i++) {	// search minimal n
 		if (way[i] == 'R' || way[i] == 'L' || way[i] == 'U' || way[i] == 'D') {
 			continue;
@@ -241,6 +263,7 @@ void normWayArray(char *way, int size)	// normalize 'way' array
 	}
 	min_n = i - 2;
 
+	// TODO эту задачу обычно выполняют при помощи одной индексной переменой. temp[i] = way[min_n - i]
 	// reverse 'way' array, write result in 'temp' array
 	for (i = 0, j = min_n; j >= 0; i++, j--) {
 		temp[i] = way[j];
